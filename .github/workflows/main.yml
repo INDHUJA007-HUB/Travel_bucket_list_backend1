@@ -21,19 +21,23 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            cd /home/ubuntu || exit 1
+            export NVM_DIR="$HOME/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+            cd /home/ubuntu
 
             if [ ! -d "Travel_bucket_list_backend1" ]; then
               git clone https://github.com/INDHUJA007-HUB/Travel_bucket_list_backend1.git
             fi
 
-            cd Travel_bucket_list_backend1 || exit 1
+            cd Travel_bucket_list_backend1
             git pull origin master
 
             echo "MONGO_URI=${{ secrets.MONGO_URI }}" > .env
             echo "PORT=4000" >> .env
 
             npm install
+
             pm2 delete student-api || true
             pm2 start server.js --name student-api
             pm2 save
