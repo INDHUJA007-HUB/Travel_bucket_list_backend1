@@ -8,6 +8,17 @@ const mongoose = require('mongoose');
 // Load env vars (CRITICAL: Must run before accessing process.env)
 dotenv.config();
 
+// --- 0. CRITICAL: Define the Allowed Frontend URL ---
+// 1. Checks for the FRONTEND_URL environment variable (set on Render)
+// 2. Falls back to localhost for local development
+// We will use the hardcoded URL as a fallback for production environments too, 
+// just to ensure it's always available if the env variable isn't set, 
+// but using the variable is preferred.
+const ALLOWED_ORIGIN = process.env.FRONTEND_URL 
+    || 'https://travel-bucket-list-frontend-sepia.vercel.app' // Fallback for Vercel
+    || 'http://localhost:5173';
+// ----------------------------------------------------
+
 // --- 1. Route Imports (Keep these organized) ---
 const authRoutes = require('./routes/authRoutes');
 const destinationRoutes = require('./routes/destinationRoutes');
@@ -17,9 +28,11 @@ const factRoutes = require('./routes/factRoutes');
 const app = express();
 
 // --- 2. CORS and Middleware ---
+// CRITICAL FIX: Use the dynamic ALLOWED_ORIGIN variable
 app.use(cors({
-  origin: 'http://localhost:5173', 
-  credentials: true
+  origin: "https://travel-bucket-list-frontend-sepia.vercel.app", // <-- THIS IS THE PLACEHOLDER/VARIABLE
+  credentials: true,      // Essential for token/cookie transfer
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Good practice to explicitly allow methods
 }));
 
 app.use(express.json()); 
