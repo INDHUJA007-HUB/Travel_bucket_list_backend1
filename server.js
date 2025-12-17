@@ -32,7 +32,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173", 
-    "https://travel-bucket-list-frontend-qtozof7rf.vercel.app/ // Your live Vercel link
+    "htravel-bucket-list-frontend-qtozof7rf.vercel.app" // Your live Vercel link
   ],
   credentials: true
 }));
