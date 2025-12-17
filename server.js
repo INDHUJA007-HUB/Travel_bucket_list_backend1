@@ -30,9 +30,11 @@ const app = express();
 // --- 2. CORS and Middleware ---
 // CRITICAL FIX: Use the dynamic ALLOWED_ORIGIN variable
 app.use(cors({
-  origin: "https://travel-bucket-list-frontend-sepia.vercel.app", // <-- THIS IS THE PLACEHOLDER/VARIABLE
-  credentials: true,      // Essential for token/cookie transfer
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Good practice to explicitly allow methods
+  origin: [
+    "http://localhost:5173", 
+    "https://travel-bucket-list-frontend-qtozof7rf.vercel.app/ // Your live Vercel link
+  ],
+  credentials: true
 }));
 
 app.use(express.json()); 
@@ -73,6 +75,8 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT} 🚀`);
+// Change your port listener to this:
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`);
 });
